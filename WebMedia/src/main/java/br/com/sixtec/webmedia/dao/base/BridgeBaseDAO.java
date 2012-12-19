@@ -41,8 +41,8 @@ public abstract class BridgeBaseDAO implements IBaseDAO {
         getBaseDAO().excluir(id, classe);
     }
     
-    public <T> void excluir(T objeto, Class<T> classe) throws DAOException {
-        getBaseDAO().excluir(objeto, classe);
+    public <T> void excluir(T objeto) throws DAOException {
+        getBaseDAO().excluir(objeto);
     }
 
     public <T> T buscar(Serializable id, Class<T> classe) throws DAOException {

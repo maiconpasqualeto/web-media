@@ -11,9 +11,9 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 
 import org.apache.log4j.Logger;
-import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
 import br.com.sixtec.webmedia.dao.MidiaDAO;
@@ -89,8 +89,8 @@ public class MidiaBean {
 		}
 	}
 	
-	public void upload() {  
-        if(fileUploaded != null) {             
+	public void upload() throws DAOException {  
+        if(fileUploaded != null) {
         	this.midia.setNomeArquivo(fileUploaded.getFileName());
             this.midia.setPathArquivo(BASE_PATH);
             
@@ -104,23 +104,29 @@ public class MidiaBean {
             }
             WebMediaHelper.copyFile(arquivo, fileUploaded);
             
-            FacesMessage msg = new FacesMessage("Arquivo ", fileUploaded.getFileName() + " foi enviado para o servidor.");  
+            Midia m = new Midia();
+            m.setNomeArquivo(getMidia().getNomeArquivo());
+            m.setPathArquivo(getMidia().getPathArquivo());
+            m.setTempoReproducao(getMidia().getTempoReproducao());
+            
+            MidiaDAO.getInstance().adicionar(m);
+            
+            listaMidias();
+            
+            setMidia(new Midia());
+            
+            FacesMessage msg = new FacesMessage("Registro salvo com sucesso!", fileUploaded.getFileName() + " foi enviado para o servidor.");  
             FacesContext.getCurrentInstance().addMessage(null, msg);  
         } 
     }
 	
-	public void salvar() throws DAOException{
-        Midia m = new Midia();
-        m.setNomeArquivo(getMidia().getNomeArquivo());
-        m.setPathArquivo(getMidia().getPathArquivo());
-        m.setTempoReproducao(getMidia().getTempoReproducao());
-        
-        MidiaDAO.getInstance().adicionar(m);
-        
-        listaMidias();
-        
-        FacesMessage msg = new FacesMessage("Registro salvo!"); 
-        FacesContext.getCurrentInstance().addMessage(null, msg);  
+	public void deletarMidia(ActionEvent actionEvent) throws DAOException {  
+		Midia m = (Midia) actionEvent.getComponent()
+				.getAttributes().get("midia");
+		MidiaDAO.getInstance().excluir(m.getId(), Midia.class);
+		
+		listaMidias();
 	}
+	
 	
 }

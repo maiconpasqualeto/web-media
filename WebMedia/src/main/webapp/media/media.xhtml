@@ -8,49 +8,34 @@
 	
 		<p:panel id="pnlMidias" header="Cadastro de Midias">
 		
-			<p:growl id="growMidia" showDetail="true"/> 
-		
 			<h:form  id="frmUpload" enctype="multipart/form-data">
-								
-				<p:fileUpload value="#{midiaBean.fileUploaded}"
-				            mode="simple" />
-				
-				<p:commandButton value="Upload" ajax="false" actionListener="#{midiaBean.upload}" />
-				
-			</h:form> 
-		
-			<h:form  id="frmMedia">
 			
-				<h:panelGrid columns="2">
-					
-					<p:outputLabel value="ID" for="txtID" />
-					<p:inputText 
-						id="txtID" 
-						value="#{midiaBean.midia.id}" 
-						readonly="true"/>
-					
-					<p:outputLabel value="Nome do Arquivo" for="txtNomeArquivo" />
-					<p:inputText 
-						id="txtNomeArquivo" 
-						value="#{midiaBean.midia.nomeArquivo}" 
-						maxlength="100"/>
-					
-					<p:outputLabel value="Caminho do Arquivo" for="txtCaminhoArquivo" />
-					<p:inputText 
-						id="txtCaminhoArquivo" 
-						value="#{midiaBean.midia.pathArquivo}" />
-					
+				<p:growl id="growUpload" showDetail="true" />
+				
+				<p:panelGrid columns="2">
+				
+					<p:outputLabel value="Arquivo" for="fileUpload" />
+					<p:fileUpload id="fileUpload"
+						value="#{midiaBean.fileUploaded}"
+			            mode="simple" 
+			            required="true" />
+		            
 					<p:outputLabel value="Tempo de reprodução" for="txtTempoReproducao" />
 					<p:inputText 
 						id="txtTempoReproducao" 
 						value="#{midiaBean.midia.tempoReproducao}" 
 						size="10"
 						maxlength="10"
-						converter="javax.faces.Integer" />
-				</h:panelGrid>
-								            
-				<p:commandButton value="Salvar" update="midias"
-					action="#{midiaBean.salvar}" />					
+						converter="javax.faces.Integer" 
+						required="true"/>
+						
+				</p:panelGrid>
+				
+				<p:commandButton 
+						value="Upload" 
+						ajax="false" 
+						actionListener="#{midiaBean.upload}" 
+						update="frmUpload"/>
 			
 				<p:separator id="separator"/>  
 				
@@ -82,9 +67,30 @@
 						<h:outputText value="#{m.tempoReproducao}" />
 					</p:column>
 					
+					<p:column headerText="Delete" style="width:50px">
+						<f:facet name="header">Ação</f:facet>
+		                <p:commandButton id="deleteClient" value="Delete" onclick="confirmDeleteClient.show()" title="Delete this Client?" styleClass="ui-icon-trash">
+		                    <f:setPropertyActionListener target="#{midia}" value="#{m}" />
+		                </p:commandButton>
+		            </p:column>
 				</p:dataTable>
-			
+				
+				<p:confirmDialog 
+					message="Apagar registro?" severity="alert" 
+					widgetVar="confirmDeleteClient" visible="false" 
+					appendToBody="true" header="Confirmação de exclusão." >
+			  
+				    <p:commandButton value="Yes" ajax="true" update=":frmUpload:midias" oncomplete="confirmDeleteClient.hide()" 
+				    	actionListener="#{midiaBean.deletarMidia}" process="@this" >
+				      <f:attribute name="midia" value="#{m}"  />
+				    </p:commandButton>
+				    <p:commandButton value="No" onclick="confirmDeleteClient.hide()" type="button" />
+				 
+				</p:confirmDialog>
+				
 			</h:form>
+			
+			
 		
 		</p:panel>
 						

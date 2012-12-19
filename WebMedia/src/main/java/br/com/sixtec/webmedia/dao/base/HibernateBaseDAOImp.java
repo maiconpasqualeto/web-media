@@ -70,8 +70,10 @@ public class HibernateBaseDAOImp implements IBaseDAO {
             EntityTransaction tr = em.getTransaction();
             try{
                 tr.begin();
+                
+                T o = GenericDAO.buscar(id, classe, em);
 
-                GenericDAO.excluir(id, em);
+                GenericDAO.excluir(o, em);
 
                 tr.commit();
             } catch(DAOException e){
@@ -83,7 +85,7 @@ public class HibernateBaseDAOImp implements IBaseDAO {
     }
     
     @Override
-    public <T> void excluir(T o, Class<T> classe)throws DAOException {
+    public <T> void excluir(T o)throws DAOException {
             EntityManager em = AdministradorPersistencia.getEntityManager();
             EntityTransaction tr = em.getTransaction();
             try{

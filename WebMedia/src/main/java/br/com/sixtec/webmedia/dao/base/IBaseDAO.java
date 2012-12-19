@@ -21,7 +21,7 @@ public interface IBaseDAO {
 
 	public <T> void excluir(Serializable id, Class<T> classe)throws DAOException;
 	
-	public <T> void excluir(T o, Class<T> classe)throws DAOException;
+	public <T> void excluir(T o)throws DAOException;
 
     public <T> T buscar(Serializable id, Class<T> classe) throws DAOException;
 
