@@ -6,11 +6,11 @@
 	
 	<ui:define name="principal">
 	
-		<p:panel id="pnlMidias" header="Cadastro de Midias">
+		<p:panel id="pnlMidias" header="Midias">
 		
 			<h:form  id="frmUpload" enctype="multipart/form-data">
 			
-				<p:growl id="growUpload" showDetail="true" />
+				<p:growl id="growUpload" showDetail="true"/>
 				
 				<p:panelGrid columns="2">
 				
@@ -18,7 +18,11 @@
 					<p:fileUpload id="fileUpload"
 						value="#{midiaBean.fileUploaded}"
 			            mode="simple" 
-			            required="true" />
+			            required="true"
+			            widgetVar="uploader"
+			            label="Selecionar"
+			            allowTypes="/(\.|\/)(wmv|mp4)$/">
+			        </p:fileUpload>
 		            
 					<p:outputLabel value="Tempo de reprodução" for="txtTempoReproducao" />
 					<p:inputText 
@@ -32,7 +36,7 @@
 				</p:panelGrid>
 				
 				<p:commandButton 
-						value="Upload" 
+						value="Salvar" 
 						ajax="false" 
 						actionListener="#{midiaBean.upload}" 
 						update="frmUpload"/>
@@ -67,31 +71,42 @@
 						<h:outputText value="#{m.tempoReproducao}" />
 					</p:column>
 					
+					<p:column>
+						<f:facet name="header">Data Upload</f:facet>
+						<h:outputText value="#{m.dataUpload}" >
+							<f:convertDateTime pattern="dd-MM-yyyy HH:mm:ss" />
+						</h:outputText>
+					</p:column>
+					
 					<p:column headerText="Delete" style="width:50px">
 						<f:facet name="header">Ação</f:facet>
-		                <p:commandButton id="deleteClient" value="Delete" onclick="confirmDeleteClient.show()" title="Delete this Client?" styleClass="ui-icon-trash">
-		                    <f:setPropertyActionListener target="#{midia}" value="#{m}" />
+		                <p:commandButton process="@this"
+		                	id="btnApagarMidia" value="Apagar"
+		                	onclick="confirmaApagarMidia.show()" 
+		                	title="Confirma apagar o Registro?" styleClass="ui-icon-trash" >
+		                	
+		                	<f:setPropertyActionListener value="#{m}"  
+                                target="#{midiaBean.midiaApagar}" />  
+                            
 		                </p:commandButton>
 		            </p:column>
 				</p:dataTable>
 				
-				<p:confirmDialog 
+				<p:confirmDialog id="confDialog"
 					message="Apagar registro?" severity="alert" 
-					widgetVar="confirmDeleteClient" visible="false" 
+					widgetVar="confirmaApagarMidia" visible="false" 
 					appendToBody="true" header="Confirmação de exclusão." >
-			  
-				    <p:commandButton value="Yes" ajax="true" update=":frmUpload:midias" oncomplete="confirmDeleteClient.hide()" 
-				    	actionListener="#{midiaBean.deletarMidia}" process="@this" >
-				      <f:attribute name="midia" value="#{m}"  />
+			  		
+				    <p:commandButton value="Sim" ajax="true" process="@this"
+				    	update="midias,growUpload" oncomplete="confirmaApagarMidia.hide()" 
+				    	actionListener="#{midiaBean.deletarMidia}">
+				    	
 				    </p:commandButton>
-				    <p:commandButton value="No" onclick="confirmDeleteClient.hide()" type="button" />
+				    <p:commandButton value="Não" onclick="confirmaApagarMidia.hide()" type="button" />
 				 
 				</p:confirmDialog>
-				
 			</h:form>
 			
-			
-		
 		</p:panel>
 						
 	</ui:define>

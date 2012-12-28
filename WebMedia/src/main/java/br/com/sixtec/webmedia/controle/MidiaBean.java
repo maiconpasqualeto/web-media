@@ -4,14 +4,15 @@
 package br.com.sixtec.webmedia.controle;
 
 import java.io.File;
+import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 
 import org.apache.log4j.Logger;
 import org.primefaces.model.UploadedFile;
@@ -25,19 +26,23 @@ import br.com.sixtec.webmedia.utils.WebMediaHelper;
  * @author maicon
  *
  */
-@ManagedBean
-@RequestScoped
-public class MidiaBean {
+@ManagedBean(name="midiaBean")
+@ViewScoped
+public class MidiaBean implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
+
 	private static final Logger log = Logger.getLogger(MidiaBean.class);
 	
-	private static final String BASE_PATH = "/home/maicon/";
+	private static final String BASE_PATH = "/home/maicon/arquivos/";
 	
 	private List<Midia> midias;
 	
-	private Midia midiaSelecionada = new Midia();
+	private Midia midiaSelecionada;
 	
 	private Midia midia = new Midia();
+	
+	private Midia midiaApagar;
 	
 	private UploadedFile fileUploaded;  
 	
@@ -80,6 +85,14 @@ public class MidiaBean {
 		this.midia = midia;
 	}
 
+	public Midia getMidiaApagar() {
+		return midiaApagar;
+	}
+
+	public void setMidiaApagar(Midia midiaApagar) {
+		this.midiaApagar = midiaApagar;
+	}
+
 	@PostConstruct
 	public void listaMidias(){
 		try {		
@@ -97,8 +110,8 @@ public class MidiaBean {
             File arquivo = new File(BASE_PATH + fileUploaded.getFileName());
             if (arquivo.exists()) {
             	log.warn("Arquivo " + fileUploaded.getFileName() + " já existe.");
-            	FacesMessage msg = new FacesMessage("Warning", "Arquivo " + fileUploaded.getFileName() + " já existe.");  
-            	msg.setSeverity(FacesMessage.SEVERITY_WARN);
+            	FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_WARN, fileUploaded.getFileName(), "Arquivo já existe.");  
+            	//msg.setSeverity(FacesMessage.SEVERITY_WARN);
                 FacesContext.getCurrentInstance().addMessage(null, msg);  
             	return;
             }
@@ -108,6 +121,7 @@ public class MidiaBean {
             m.setNomeArquivo(getMidia().getNomeArquivo());
             m.setPathArquivo(getMidia().getPathArquivo());
             m.setTempoReproducao(getMidia().getTempoReproducao());
+            m.setDataUpload(new Date());
             
             MidiaDAO.getInstance().adicionar(m);
             
@@ -115,17 +129,29 @@ public class MidiaBean {
             
             setMidia(new Midia());
             
-            FacesMessage msg = new FacesMessage("Registro salvo com sucesso!", fileUploaded.getFileName() + " foi enviado para o servidor.");  
+            FacesMessage msg = new FacesMessage(
+            		fileUploaded.getFileName(), 
+            		"O arquivo foi enviado para o servidor.");  
             FacesContext.getCurrentInstance().addMessage(null, msg);  
         } 
     }
 	
-	public void deletarMidia(ActionEvent actionEvent) throws DAOException {  
-		Midia m = (Midia) actionEvent.getComponent()
-				.getAttributes().get("midia");
-		MidiaDAO.getInstance().excluir(m.getId(), Midia.class);
+	public void deletarMidia() throws DAOException {  
+		/*Midia m = (Midia) actionEvent.getComponent()
+				.getAttributes().get("midia");*/
+				
+		File arquivo = new File(midiaApagar.getPathArquivo() + midiaApagar.getNomeArquivo());
+		if (arquivo.exists())
+			arquivo.delete();		
+		
+		MidiaDAO.getInstance().excluir(midiaApagar.getId(), Midia.class);
 		
 		listaMidias();
+		
+		FacesMessage msg = new FacesMessage(
+				midiaApagar.getNomeArquivo(), 
+				"O arquivo foi excluído do servidor.");  
+        FacesContext.getCurrentInstance().addMessage(null, msg);  
 	}
 	
 	

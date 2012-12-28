@@ -1,0 +1,102 @@
+<ui:composition template="/layout/tpl_principal.xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<ui:define name="principal">
+	
+		<p:panel id="pnlMidias" header="Playlists">
+		
+			<h:form  id="frmPlaylist">
+			
+				<p:growl id="growPlaylist" showDetail="true" />
+				
+				<p:panelGrid columns="2">
+				
+					<p:outputLabel value="ID:" for="txtID" />
+					<p:inputText 
+						id="txtID" 
+						value="#{playlistBean.playlist.id}" 
+						size="10"
+						maxlength="10"
+						required="true"/>
+		            
+					<p:outputLabel value="Descricao" for="txtDescricao" />
+					<p:inputText 
+						id="txtDescricao" 
+						value="#{playlistBean.playlist.descricao}" 
+						required="true"/>
+						
+				</p:panelGrid>
+				
+				<p:commandButton 
+						value="Salvar" 
+						ajax="false" 
+						actionListener="#{playlistBean.salvar}" 
+						update="frmPlaylist"/>
+			
+				<p:separator id="separator"/>  
+			
+				<p:dataTable 
+					id="playlists"
+					emptyMessage="Lista vazia" 
+					value="#{playlistBean.playlists}" var="p"
+					rowKey="#{p.id}"
+					paginator="true" rows="10"
+					selectionMode="single"
+					selection="#{playlistBean.selectedPlaylist}" >
+					
+					<p:ajax event="rowSelect" listener="#{playlistBean.onSelect}"   
+                    	update=":frmPlaylist:growPlaylist,:frmPlaylist"/> 
+	
+					<p:column>
+						<f:facet name="header">ID</f:facet>
+						<h:outputText converter="javax.faces.Long" value="#{p.id}" />
+					</p:column>
+					
+					<p:column>
+						<f:facet name="header">Descricao</f:facet>
+						<h:outputText value="#{p.descricao}" />
+					</p:column>
+					
+					<p:column>
+						<f:facet name="header">Data e hora criação</f:facet>
+						<h:outputText value="#{p.dataHoraCriacao}" />
+					</p:column>
+										
+					<p:column headerText="Delete" style="width:50px">
+						<f:facet name="header">Ação</f:facet>
+		                <p:commandButton process="@this"
+		                	id="btnApagarPlaylist" value="Apagar" 
+		                	onclick="confirmaApagar.show()" 
+		                	title="Confirma apagar o Registro?" styleClass="ui-icon-trash">
+		                	
+		                	<f:setPropertyActionListener value="#{p}"  
+                                target="#{playlistBean.playlistApagar}" />  
+                                
+		                </p:commandButton>
+		            </p:column>
+				</p:dataTable>
+				
+				<p:confirmDialog 
+					message="Apagar registro?" severity="alert" 
+					widgetVar="confirmaApagar" visible="false" 
+					appendToBody="true" header="Confirmação de exclusão." >
+			  
+				    <p:commandButton value="Sim" ajax="true" process="@this"
+				    	update="playlists,growPlaylist" oncomplete="confirmaApagar.hide()" 
+				    	actionListener="#{playlistBean.deletarPlaylist}"  >
+				    </p:commandButton>
+				    
+				    <p:commandButton value="Não" onclick="confirmaApagar.hide()" type="button" />
+				 
+				</p:confirmDialog>
+				
+			</h:form>
+			
+		</p:panel>
+		
+	</ui:define>
+	
+</ui:composition>

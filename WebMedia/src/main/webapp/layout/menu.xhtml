@@ -13,21 +13,20 @@
 		<ui:composition>
 			<h:form>
 				<p:menubar>					
-					<p:menuitem value="Home" action="/layout/home.xhtml" />
-					<p:submenu label="Cadastro">
-						<p:menuitem value="Midias" action="/media/media.xhtml" />
-						<p:menuitem value="Salvar" action="#" />
-						<p:menuitem value="Salvar como..." action="#" />
+					<p:menuitem value="Home" url="/layout/home.xhtml"  />
+					<p:submenu label="Cadastros">
+						<p:menuitem value="Midias" url="/pages/media.xhtml" />
+						<p:menuitem value="Playlists" url="/pages/playlist.xhtml" />
 					</p:submenu>
 					<p:submenu label="Editar">
-						<p:menuitem value="Recortar" action="#" />
+						<p:menuitem value="Recortar" url="#" />
 					</p:submenu>
 					<p:submenu label="Ferramentas">
-						<p:menuitem value="Upload de arquivo" action="#" />
-						<p:menuitem value="Download de arquivo" action="#" />
-						<p:menuitem value="Conversão" action="#" />
+						<p:menuitem value="Upload de arquivo" url="#" />
+						<p:menuitem value="Download de arquivo" url="#" />
+						<p:menuitem value="Conversão" url="#" />
 					</p:submenu>
-					<p:menuitem value="Sair" action="#" />
+					<p:menuitem value="Sair" url="#" />
 				</p:menubar>
 			</h:form>	
 		</ui:composition>

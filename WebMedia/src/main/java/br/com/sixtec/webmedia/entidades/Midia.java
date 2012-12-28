@@ -4,14 +4,19 @@
 package br.com.sixtec.webmedia.entidades;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 
 /**
@@ -38,6 +43,14 @@ public class Midia implements Serializable{
 	
 	@Column(name="tempo_reproducao")
 	private Integer tempoReproducao;
+	
+	@Column(name="data_upload")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date dataUpload;
+	
+	@ManyToMany(mappedBy="midias")
+	private List<Playlist> playlists;
+	
 
 	public Long getId() {
 		return id;
@@ -71,7 +84,20 @@ public class Midia implements Serializable{
 		this.tempoReproducao = tempoReproducao;
 	}
 
-	
-	
+	public Date getDataUpload() {
+		return dataUpload;
+	}
+
+	public void setDataUpload(Date dataUpload) {
+		this.dataUpload = dataUpload;
+	}
+
+	public List<Playlist> getPlaylists() {
+		return playlists;
+	}
+
+	public void setPlaylists(List<Playlist> playlists) {
+		this.playlists = playlists;
+	}
 
 }
