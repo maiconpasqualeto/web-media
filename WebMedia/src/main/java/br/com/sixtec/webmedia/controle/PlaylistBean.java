@@ -4,7 +4,6 @@
 package br.com.sixtec.webmedia.controle;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -15,9 +14,7 @@ import javax.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
 import org.primefaces.event.SelectEvent;
-import org.primefaces.model.DualListModel;
 
-import br.com.sixtec.webmedia.dao.MidiaDAO;
 import br.com.sixtec.webmedia.dao.PlaylistDAO;
 import br.com.sixtec.webmedia.dao.base.DAOException;
 import br.com.sixtec.webmedia.entidades.Midia;
@@ -42,8 +39,6 @@ public class PlaylistBean implements Serializable {
 	private Playlist playlist;
 	
 	private Playlist selectedPlaylist;
-	
-	private DualListModel<Midia> midias;
 	
 	public List<Playlist> getPlaylists() {
 		return playlists;
@@ -76,24 +71,9 @@ public class PlaylistBean implements Serializable {
 	public void setSelectedPlaylist(Playlist selectedPlaylist) {
 		this.selectedPlaylist = selectedPlaylist;
 	}
-	
-	public DualListModel<Midia> getMidias() {
-		return midias;
-	}
-
-	public void setMidias(DualListModel<Midia> midias) {
-		this.midias = midias;
-	}
 
 	@PostConstruct
-	public void carregaInformacoesInicias(){
-		listaPlaylist();
-		
-		listaMidias();
-			
-	}
-	
-	public void listaPlaylist() {
+	public void listaPlaylist(){
 		playlists = PlaylistDAO.getInstance().buscarPlaylists();
 		for (Playlist p : playlists) {
 			Playlist pl = PlaylistDAO.getInstance().buscarPlaylist(p.getId());
@@ -103,25 +83,8 @@ public class PlaylistBean implements Serializable {
 		}
 	}
 	
-	public void listaMidias(){
-		try {
-			List<Midia> ms = MidiaDAO.getInstance().buscarTodos(Midia.class);
-			//List<Midia> ms = new ArrayList<Midia>();
-			List<Midia> mt = new ArrayList<Midia>();
-			
-			midias = new DualListModel<Midia>();
-			midias.setSource(ms);
-			midias.setTarget(mt);
-			
-		} catch (DAOException e) {
-			log.error("Erro ao buscar Midias", e);
-		}
-	}
-	
 	public void salvar() {
-		for (Midia m : midias.getTarget()) {
-			System.out.println(m.getNomeArquivo());
-		}
+		
 	}
 	
 	public void deletarPlaylist() throws DAOException {  
@@ -138,13 +101,8 @@ public class PlaylistBean implements Serializable {
 	public void onSelect(SelectEvent event) {  
 		Playlist p = (Playlist) event.getObject();
 		playlist = p;
-		midias.setSource(MidiaDAO.getInstance().buscarMidiasQueNaoEstaoNoPlaylist(p));
-		
-		Playlist pl = PlaylistDAO.getInstance().buscarPlaylist(p.getId());		
-		midias.setTarget(pl.getMidias());
-        /*FacesMessage msg = new FacesMessage("Selecionado", p.getDescricao()); 
-        FacesContext.getCurrentInstance().addMessage(null, msg);  */
+        FacesMessage msg = new FacesMessage("Selecionado", p.getDescricao()); 
+        FacesContext.getCurrentInstance().addMessage(null, msg);  
     }  
-		
 
 }
