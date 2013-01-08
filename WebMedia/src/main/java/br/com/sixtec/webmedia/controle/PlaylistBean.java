@@ -5,6 +5,7 @@ package br.com.sixtec.webmedia.controle;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -39,7 +40,7 @@ public class PlaylistBean implements Serializable {
 	
 	private Playlist playlistApagar;
 	
-	private Playlist playlist;
+	private Playlist playlist = new Playlist();
 	
 	private Playlist selectedPlaylist;
 	
@@ -119,16 +120,29 @@ public class PlaylistBean implements Serializable {
 	}
 	
 	public void salvar() {
-		for (Midia m : midias.getTarget()) {
-			System.out.println(m.getNomeArquivo());
+		try {
+			playlist.setMidias(midias.getTarget());
+			
+			if (playlist.getId() == null) {
+				playlist.setDataHoraCriacao(new Date());
+				PlaylistDAO.getInstance().adicionarPlaylist(playlist, midias.getTarget());
+			} else {
+				PlaylistDAO.getInstance().alterar(playlist);
+				playlist = new Playlist();
+				selectedPlaylist = null;
+			}
+		} catch (DAOException e) {
+			log.error("Erro ao buscar Midias", e);
 		}
+		
+		carregaInformacoesInicias();
 	}
 	
 	public void deletarPlaylist() throws DAOException {  
 		
 		PlaylistDAO.getInstance().excluir(playlistApagar.getId(), Playlist.class);
 		
-		listaPlaylist();
+		carregaInformacoesInicias();
 		
 		FacesMessage msg = new FacesMessage(
 				"O Registro foi excluído.");  

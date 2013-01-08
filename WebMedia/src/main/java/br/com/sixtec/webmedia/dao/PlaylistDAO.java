@@ -3,9 +3,11 @@
  */
 package br.com.sixtec.webmedia.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.TypedQuery;
 
 import org.apache.log4j.Logger;
@@ -13,6 +15,7 @@ import org.hibernate.Hibernate;
 
 import br.com.sixtec.webmedia.dao.base.BridgeBaseDAO;
 import br.com.sixtec.webmedia.dao.base.HibernateBaseDAOImp;
+import br.com.sixtec.webmedia.entidades.Midia;
 import br.com.sixtec.webmedia.entidades.Playlist;
 import br.com.sixtec.webmedia.persistencia.base.AdministradorPersistencia;
 
@@ -67,6 +70,29 @@ public class PlaylistDAO extends BridgeBaseDAO {
             em.close();
         }
 		return p;
+	}
+	
+	public void adicionarPlaylist(Playlist p, List<Midia> midias) {
+		EntityManager em = AdministradorPersistencia.getEntityManager();
+		EntityTransaction t = em.getTransaction();
+        try{
+        	t.begin();
+        	List<Midia> midiasSessao = new ArrayList<Midia>();
+        	for (Midia m : midias) {
+        		m = em.merge(m);
+        		midiasSessao.add(m);
+        	}
+        	p.setMidias(midiasSessao);
+        	em.persist(p);
+        	
+        	t.commit();
+        	
+        } catch (Exception e) {
+        	t.rollback();
+        	log.error("Erro ao inserir Playlist", e);
+        } finally {
+            em.close();
+        }
 	}
 
 }
