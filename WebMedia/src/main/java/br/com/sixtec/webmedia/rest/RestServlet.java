@@ -27,13 +27,12 @@ public class RestServlet extends HttpServlet {
 			throws ServletException, IOException {
 		JSONObject o = new JSONObject();
 		o.put("id", 1);
-		o.put("nome", "Nelson");
-		o.put("outro", "info1");
+		o.put("nome", "Fiesta");
 		
 		OutputStream os = response.getOutputStream();  
 	    os.write(o.toString().getBytes());
 	    os.flush(); 
-		
+		os.close();
 	}
 
 }
