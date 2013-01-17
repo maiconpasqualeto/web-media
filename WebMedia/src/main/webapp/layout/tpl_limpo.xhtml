@@ -6,7 +6,9 @@
   <h:head>
 		<h:outputStylesheet name="common-style.css" library="css" />
 		<style type="text/css">
-            .ui-widget {font-size: 70%;}
+            .ui-widget { font-size: 70%; }
+            .ui-datatable-data, .ui-state-default { font-size: 68%; }
+			.ui-widget .ui-widget { font-size: 95%; }
             .ui-menubar {
             	padding: 0 0 0 0;
             	width: 100%;
@@ -15,6 +17,7 @@
             .ui-menubar .ui-menuitem-link {padding: 2 2 2 2;}
             .ui-menubar .ui-menu-child {top: 21px}
             form {margin-bottom: 0px; padding: 0 0 0 0;}
+            .ui-picklist-item table { font-size: inherit; color: inherit; }
         </style>
   </h:head>
   	<h:body>
@@ -29,7 +32,7 @@
 			</ui:insert>
 	    </div>
 	    <div id="conteudo" class="ui-widget" style="height: 45em;">
-	    	<ui:insert name="conteudo" />
+	    	<ui:insert name="limpo" />
 	    </div>
 	    <div id="footer" class="ui-widget ui-widget-header">
 	    	<ui:insert name="rodape">

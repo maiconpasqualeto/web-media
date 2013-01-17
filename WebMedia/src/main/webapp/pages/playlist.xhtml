@@ -11,43 +11,47 @@
 			<h:form  id="frmPlaylist">
 			
 				<p:growl id="growPlaylist" showDetail="true" />
-				
-				<p:panelGrid columns="2">
-				
-					<p:outputLabel value="ID:" for="txtID" />
-					<p:inputText 
-						id="txtID" 
-						value="#{playlistBean.playlist.id}" 
-						size="10"
-						maxlength="10"
-						required="true"/>
-		            
-					<p:outputLabel value="Descricao" for="txtDescricao" />
-					<p:inputText 
-						id="txtDescricao" 
-						value="#{playlistBean.playlist.descricao}" 
-						required="true"/>
+			
+				<p:panelGrid id="pgPlaylist" columns="2" styleClass="panelGridLSemBorda" >
+					
+					<p:panelGrid columns="2" styleClass="panelGridLComBorda" >
+					
+						<p:outputLabel value="ID:" for="txtID" />
+						<p:inputText 
+							id="txtID" 
+							value="#{playlistBean.playlist.id}" 
+							size="10"
+							maxlength="10"
+							readonly="true"/>
+			            
+						<p:outputLabel value="Descricao" for="txtDescricao" />
+						<p:inputText 
+							id="txtDescricao" 
+							value="#{playlistBean.playlist.descricao}" 
+							required="true"/>
+							
+					</p:panelGrid>
+					
+					<p:pickList id="mediasPick" value="#{playlistBean.midias}" 
+						var="m" itemLabel="#{m}" itemValue="#{m}"
+						converter="playlistConverter" >
 						
-				</p:panelGrid>
+						<f:facet name="sourceCaption">Mídias</f:facet>
+						<f:facet name="targetCaption">Mídias do playlist</f:facet>
+						
+						<p:column style="width:75%">
+							#{m.nomeArquivo}
+				        </p:column>
+				        <p:column style="width:25%">  
+				            #{m.tempoReproducao}
+				        </p:column>  
+					</p:pickList>
 				
-				<p:pickList id="mediasPick" value="#{playlistBean.midias}" 
-					var="m" itemLabel="#{m}" itemValue="#{m}"
-					converter="playlistConverter" >
-					
-					<f:facet name="sourceCaption">Mídias</f:facet>
-					<f:facet name="targetCaption">Mídias do playlist</f:facet>
-					
-					<p:column style="width:75%;">
-						#{m.nomeArquivo}
-			        </p:column>
-			        <p:column style="width:25%">  
-			            #{m.tempoReproducao}
-			        </p:column>  
-				</p:pickList>
+				</p:panelGrid>
 				
 				<p:commandButton 
 						value="Salvar" 
-						ajax="false" 
+						ajax="false"
 						actionListener="#{playlistBean.salvar}" 
 						update="frmPlaylist"/>
 			

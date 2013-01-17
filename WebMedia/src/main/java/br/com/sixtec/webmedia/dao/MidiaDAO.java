@@ -40,9 +40,12 @@ public class MidiaDAO extends BridgeBaseDAO {
 		List<Midia> retorno = null;
         try{
         	StringBuilder hql = new StringBuilder();
-        	hql.append("select m from Midia m ");
+        	hql.append("select distinct m from Midia m ");
         	hql.append("left outer join m.playlists p ");
-        	hql.append("where p.id != :idPlaylist or p = null");
+        	hql.append("where m not in ( ");
+			hql.append("select m from Midia m join m.playlists p ");
+			hql.append("where p.id = :idPlaylist) ");
+			hql.append("or p = null");
         	TypedQuery<Midia> q = em.createQuery(hql.toString(), Midia.class);
         	q.setParameter("idPlaylist", p.getId());
             retorno = q.getResultList();
