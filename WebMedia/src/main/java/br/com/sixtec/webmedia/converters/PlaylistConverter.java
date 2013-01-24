@@ -33,10 +33,13 @@ public class PlaylistConverter implements Converter {
 		
 		DualListModel<Midia> dualList = (DualListModel<Midia>) ((PickList) comp).getValue();  
 		List<Midia> midiasSource = dualList.getSource();
-		int idx = Collections.binarySearch(midiasSource, m, new MidiaComparator());
+		MidiaComparator mc = new MidiaComparator();
+		Collections.sort(midiasSource, mc);		
+		int idx = Collections.binarySearch(midiasSource, m, mc);
 		if (idx < 0) {
 			List<Midia> midiasTarget = dualList.getTarget();
-			idx = Collections.binarySearch(midiasTarget, m, new MidiaComparator());
+			Collections.sort(midiasTarget, mc);
+			idx = Collections.binarySearch(midiasTarget, m, mc);
 			m = midiasTarget.get(idx);
 		} else {
 			m = midiasSource.get(idx);

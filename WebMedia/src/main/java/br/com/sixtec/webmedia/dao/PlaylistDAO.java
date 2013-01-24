@@ -27,7 +27,7 @@ public class PlaylistDAO extends BridgeBaseDAO {
 	
 	private static final Logger log = Logger.getLogger(PlaylistDAO.class);
 	
-	public static PlaylistDAO dao;
+	private static PlaylistDAO dao;
 	
 	public static PlaylistDAO getInstance(){
 		if (dao == null)

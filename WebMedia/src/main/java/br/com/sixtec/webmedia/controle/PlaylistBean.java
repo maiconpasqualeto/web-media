@@ -128,12 +128,13 @@ public class PlaylistBean implements Serializable {
 				PlaylistDAO.getInstance().adicionarPlaylist(playlist, midias.getTarget());
 			} else {
 				PlaylistDAO.getInstance().alterar(playlist);
-				playlist = new Playlist();
-				selectedPlaylist = null;
+				
 			}
 		} catch (DAOException e) {
 			log.error("Erro ao buscar Midias", e);
 		}
+		playlist = new Playlist();
+		selectedPlaylist = null;
 		
 		carregaInformacoesInicias();
 	}
@@ -143,6 +144,9 @@ public class PlaylistBean implements Serializable {
 		PlaylistDAO.getInstance().excluir(playlistApagar.getId(), Playlist.class);
 		
 		carregaInformacoesInicias();
+		
+		playlist = new Playlist();
+		playlistApagar = null;
 		
 		FacesMessage msg = new FacesMessage(
 				"O Registro foi excluído.");  

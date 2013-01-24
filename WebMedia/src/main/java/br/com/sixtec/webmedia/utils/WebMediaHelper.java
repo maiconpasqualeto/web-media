@@ -8,6 +8,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 import org.apache.log4j.Logger;
 import org.primefaces.model.UploadedFile;
@@ -19,6 +21,8 @@ import org.primefaces.model.UploadedFile;
 public class WebMediaHelper {
 	
 	private static final Logger log = Logger.getLogger(WebMediaHelper.class);
+	
+	public static final DateFormat FORMATADOR_DATA_HORA =  new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 	
 	public static void copyFile(File destino, UploadedFile fileUploaded){
 		FileOutputStream fos = null;

@@ -18,6 +18,10 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import br.com.sixtec.webmedia.utils.WebMediaHelper;
+
+import net.sf.json.JSONObject;
+
 
 /**
  * @author maicon
@@ -25,7 +29,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="midia")
-public class Midia implements Serializable{
+public class Midia implements Serializable, StringJASON {
 	
 	private static final long serialVersionUID = 1L;
 
@@ -98,6 +102,17 @@ public class Midia implements Serializable{
 
 	public void setPlaylists(List<Playlist> playlists) {
 		this.playlists = playlists;
+	}
+
+	@Override
+	public JSONObject toJSONObject() {
+		JSONObject o = new JSONObject();
+		o.put("id", id);
+		o.put("nomeArquivo", nomeArquivo);
+		o.put("pathArquivo", pathArquivo);
+		o.put("tempoReproducao", tempoReproducao);
+		o.put("dataUpload", WebMediaHelper.FORMATADOR_DATA_HORA.format(dataUpload));
+		return o;
 	}
 
 }

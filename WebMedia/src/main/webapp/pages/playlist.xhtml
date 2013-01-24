@@ -67,7 +67,7 @@
 					selection="#{playlistBean.selectedPlaylist}" >
 					
 					<p:ajax event="rowSelect" listener="#{playlistBean.onSelect}"   
-                    	update=":frmPlaylist :frmPlaylist:mediasPick"/> 
+                    	update=":frmPlaylist:txtID :frmPlaylist:txtDescricao :frmPlaylist:mediasPick"/> 
 	
 					<p:column>
 						<f:facet name="header">ID</f:facet>
@@ -88,7 +88,7 @@
 						<f:facet name="header">Ação</f:facet>
 		                <p:commandButton process="@this"
 		                	id="btnApagarPlaylist" value="Apagar" 
-		                	onclick="confirmaApagar.show()" 
+		                	onclick="confirmaApagar.show();" 
 		                	title="Confirma apagar o Registro?" styleClass="ui-icon-trash">
 		                	
 		                	<f:setPropertyActionListener value="#{p}"  
@@ -98,9 +98,9 @@
 		            </p:column>
 				</p:dataTable>
 				
-				<p:confirmDialog 
+				<p:confirmDialog id="confDialog"
 					message="Apagar registro?" severity="alert" 
-					widgetVar="confirmaApagar" visible="false" 
+					widgetVar="confirmaApagar" 
 					appendToBody="true" header="Confirmação de exclusão." >
 			  
 				    <p:commandButton value="Sim" ajax="true" process="@this"

@@ -20,7 +20,7 @@ import br.com.sixtec.webmedia.persistencia.base.AdministradorPersistencia;
  */
 public class MidiaDAO extends BridgeBaseDAO {
 	
-	public static MidiaDAO dao;
+	private static MidiaDAO dao;
 	
 	public static MidiaDAO getInstance(){
 		if (dao == null)
@@ -46,6 +46,23 @@ public class MidiaDAO extends BridgeBaseDAO {
 			hql.append("select m from Midia m join m.playlists p ");
 			hql.append("where p.id = :idPlaylist) ");
 			hql.append("or p = null");
+        	TypedQuery<Midia> q = em.createQuery(hql.toString(), Midia.class);
+        	q.setParameter("idPlaylist", p.getId());
+            retorno = q.getResultList();
+        } finally {
+            em.close();
+        }
+        return retorno;		
+	}
+	
+	public List<Midia> buscarMidiasDoPlaylist(Playlist p){
+		EntityManager em = AdministradorPersistencia.getEntityManager();
+		List<Midia> retorno = null;
+        try{
+        	StringBuilder hql = new StringBuilder();
+        	hql.append("select m from Midia m ");
+        	hql.append("join m.playlists p ");
+			hql.append("where p.id = :idPlaylist) ");
         	TypedQuery<Midia> q = em.createQuery(hql.toString(), Midia.class);
         	q.setParameter("idPlaylist", p.getId());
             retorno = q.getResultList();
