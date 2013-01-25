@@ -28,10 +28,12 @@
 					<p:inputText 
 						id="txtTempoReproducao" 
 						value="#{midiaBean.midia.tempoReproducao}" 
-						size="10"
+						size="25"
 						maxlength="10"
 						converter="javax.faces.Integer" 
-						required="true"/>
+						required="true">
+						<p:watermark for="txtTempoReproducao" value="Tempo de duração do vídeo" />
+					</p:inputText>
 						
 				</p:panelGrid>
 				

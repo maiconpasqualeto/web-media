@@ -82,8 +82,10 @@ public class BoardRest {
 	@Path("registraboard")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response postarJson(@FormParam("boardSerial") String boardSerial) {
-		List<Midia> midias = BoardFacade.getInstance().registrarBoard(boardSerial);
+	public Response registraboard(
+			@FormParam("boardSerial") String boardSerial,
+			@FormParam("identificador") String identificador) {
+		List<Midia> midias = BoardFacade.getInstance().registrarBoard(boardSerial, identificador);
 		
 		JSONArray arr = new JSONArray();
 		for (Midia m  : midias){

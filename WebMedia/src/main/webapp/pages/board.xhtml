@@ -1,0 +1,137 @@
+<ui:composition template="/layout/tpl_principal.xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<ui:define name="principal">
+	
+		<p:panel id="pnlBoards" header="Boards">
+		
+			<h:form  id="frmBoard">
+			
+				<p:growl id="growBoard" showDetail="true"/>
+				
+				<p:panelGrid columns="2" id="pnlCampos">
+				
+					<p:outputLabel value="ID" for="txtID" />
+					<p:inputText 
+						id="txtID" 
+						value="#{boardBean.board.id}"
+						readonly="true">
+						<p:watermark for="txtID" value="ID Automático" />
+					</p:inputText>
+		            
+					<p:outputLabel value="Serial da Board" for="txtBoardSerial" />
+					<p:inputText 
+						id="txtBoardSerial" 
+						value="#{boardBean.board.boardSerial}" 
+						readonly="true">
+					</p:inputText>
+					
+					<p:outputLabel value="Identificador da placa" for="txtIdentificador" />
+					<p:inputText 
+						id="txtIdentificador" 
+						value="#{boardBean.board.identificador}" 
+						readonly="true">
+					</p:inputText>
+					
+					<p:outputLabel value="Data do último playlist" for="txtDataHoraPlaylist" />
+					<p:inputText 
+						id="txtDataHoraPlaylist" 
+						value="#{boardBean.board.dataHoraPlaylist}" 
+						readonly="true">
+						<f:convertDateTime pattern="dd-MM-yyyy HH:mm:ss" />
+					</p:inputText>
+					
+					<p:outputLabel value="Playlist" for="cmbPlaylist" />
+					<p:selectOneMenu id="cmbPlaylist" value="#{boardBean.playlist}" effect="fade" converter="pbConverter"
+						style="width:160px" panelStyle="width:150px" var="p"
+						filter="true" filterMatchMode="startsWith"
+						required="true" requiredMessage="Selecione um playlist">
+						
+						<f:selectItem itemLabel="Selecione..." itemValue="" />
+						<f:selectItems value="#{boardBean.playlists}" var="pl"
+							itemLabel="#{pl.descricao}" itemValue="#{pl}" />
+						<p:column>  
+			               #{p.descricao}
+			            </p:column> 
+					</p:selectOneMenu>
+
+				</p:panelGrid>
+				
+				<p:commandButton 
+						value="Salvar" 
+						ajax="false" 
+						actionListener="#{boardBean.salvar}" 
+						update="frmUpload"/>
+			
+				<p:separator id="separator"/>  
+				
+				<p:dataTable 
+					id="tblBoards"
+					emptyMessage="Lista vazia" 
+					value="#{boardBean.boards}" var="b"
+					selectionMode="single" rowKey="#{b.id}"
+					selection="#{boardBean.boardSelecionada}"
+					paginator="true" rows="10" >
+					
+					<p:ajax event="rowSelect" listener="#{boardBean.onSelect}"   
+                    	update=":frmBoard:pnlCampos"/> 
+	
+					<p:column>
+						<f:facet name="header">ID</f:facet>
+						<h:outputText converter="javax.faces.Long" value="#{b.id}" />
+					</p:column>
+					
+					<p:column>
+						<f:facet name="header">Serial da Board</f:facet>
+						<h:outputText value="#{b.boardSerial}" />
+					</p:column>
+					
+					<p:column>
+						<f:facet name="header">Identificador</f:facet>
+						<h:outputText value="#{b.identificador}" />
+					</p:column>
+										
+					<p:column>
+						<f:facet name="header">Data do último playlist</f:facet>
+						<h:outputText value="#{b.dataHoraPlaylist}" >
+							<f:convertDateTime pattern="dd-MM-yyyy HH:mm:ss" />
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="Delete" style="width:50px">
+						<f:facet name="header">Ação</f:facet>
+		                <p:commandButton process="@this"
+		                	id="btnApagarBoard" value="Apagar"
+		                	onclick="confirmaApagarBoard.show()" 
+		                	title="Confirma apagar o Registro?" styleClass="ui-icon-trash" >
+		                	
+		                	<f:setPropertyActionListener value="#{b}"  
+                                target="#{boardBean.boardApagar}" />  
+                            
+		                </p:commandButton>
+		            </p:column>
+				</p:dataTable>
+				
+				<p:confirmDialog id="confDialog"
+					message="Apagar registro?" severity="alert" 
+					widgetVar="confirmaApagarBoard" visible="false" 
+					appendToBody="true" header="Confirmação de exclusão." >
+			  		
+				    <p:commandButton value="Sim" ajax="true" process="@this"
+				    	update="growBoard,pnlCampos,tblBoards" oncomplete="confirmaApagarBoard.hide()" 
+				    	actionListener="#{boardBean.deletarBoard}">
+				    	
+				    </p:commandButton>
+				    <p:commandButton value="Não" onclick="confirmaApagarBoard.hide()" type="button" />
+				 
+				</p:confirmDialog>
+			</h:form>
+			
+		</p:panel>
+						
+	</ui:define>
+	
+</ui:composition>

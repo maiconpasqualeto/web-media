@@ -22,13 +22,18 @@
 							value="#{playlistBean.playlist.id}" 
 							size="10"
 							maxlength="10"
-							readonly="true"/>
+							readonly="true">
+							<p:watermark for="txtID" value="ID Automático" />
+						</p:inputText>
+						
 			            
 						<p:outputLabel value="Descricao" for="txtDescricao" />
 						<p:inputText 
 							id="txtDescricao" 
 							value="#{playlistBean.playlist.descricao}" 
-							required="true"/>
+							required="true">
+							<p:watermark for="txtDescricao" value="Nome do Playlist" />
+						</p:inputText>
 							
 					</p:panelGrid>
 					

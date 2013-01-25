@@ -4,6 +4,7 @@
 package br.com.sixtec.webmedia.facade;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -36,14 +37,15 @@ public class BoardFacade {
 	 * @param boardSerial
 	 * @return
 	 */
-	public List<Midia> registrarBoard(String boardSerial){
-		List<Midia> midias = null;
+	public List<Midia> registrarBoard(String boardSerial, String identificador){
+		List<Midia> midias = new ArrayList<Midia>();
 		try {
 			BoardDAO dao = BoardDAO.getInstance();
 			Board b = dao.buscarPeloBoardSerial(boardSerial);
 			if (b == null) {
 				b = new Board();
 				b.setBoardSerial(boardSerial);
+				b.setIdentificador(identificador);
 				b = dao.adicionar(b);
 			}
 			

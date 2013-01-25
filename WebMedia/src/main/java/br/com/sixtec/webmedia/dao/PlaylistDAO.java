@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
 import org.apache.log4j.Logger;
@@ -41,9 +42,7 @@ public class PlaylistDAO extends BridgeBaseDAO {
 	public PlaylistDAO() {
 		super(new HibernateBaseDAOImp());
 	}
-	
-	
-	
+		
 	public List<Playlist> buscarPlaylists() {
 		EntityManager em = AdministradorPersistencia.getEntityManager();
 		List<Playlist> retorno = null;
@@ -93,6 +92,27 @@ public class PlaylistDAO extends BridgeBaseDAO {
         } finally {
             em.close();
         }
+	}
+	
+	public Playlist buscarPlaylistDaBoard(Long idBoard) {
+		EntityManager em = AdministradorPersistencia.getEntityManager();
+		Playlist p = null;
+		try {
+			StringBuilder hql = new StringBuilder();
+        	hql.append("select p from Board b ");
+        	hql.append("inner join b.playlist p ");
+        	hql.append("where b.id = :idBoard ");
+        	TypedQuery<Playlist> q = em.createQuery(hql.toString(), Playlist.class);
+        	q.setParameter("idBoard", idBoard);
+            p = q.getSingleResult();
+		} catch (NoResultException e) {
+			// sem resultado retorna vazio
+		} catch (Exception e) {
+			log.error("Erro ao buscar Playlist", e);
+		}finally {
+            em.close();
+        }
+		return p;
 	}
 
 }
