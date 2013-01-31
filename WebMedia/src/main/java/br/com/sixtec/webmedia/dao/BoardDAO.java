@@ -3,6 +3,8 @@
  */
 package br.com.sixtec.webmedia.dao;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
@@ -13,6 +15,7 @@ import org.hibernate.Hibernate;
 import br.com.sixtec.webmedia.dao.base.BridgeBaseDAO;
 import br.com.sixtec.webmedia.dao.base.HibernateBaseDAOImp;
 import br.com.sixtec.webmedia.entidades.Board;
+import br.com.sixtec.webmedia.entidades.Playlist;
 import br.com.sixtec.webmedia.persistencia.base.AdministradorPersistencia;
 
 /**
@@ -61,6 +64,21 @@ public class BoardDAO extends BridgeBaseDAO {
             em.close();
         }
 		return b;
+	}
+	
+	public List<Board> buscarBoards() {
+		EntityManager em = AdministradorPersistencia.getEntityManager();
+		List<Board> retorno = null;
+        try{
+        	StringBuilder hql = new StringBuilder();
+        	hql.append("select b from Board b ");
+        	hql.append("order by b.id ");
+        	TypedQuery<Board> q = em.createQuery(hql.toString(), Board.class);        	
+            retorno = q.getResultList();
+        } finally {
+            em.close();
+        }
+        return retorno;
 	}
 
 }

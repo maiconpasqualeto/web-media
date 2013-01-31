@@ -96,16 +96,12 @@ public class BoardBean implements Serializable {
 
 	@PostConstruct
 	public void listaInformacoesInciciais(){
-		try {
-			boardApagar = null;
-			boardSelecionada = null;
-			playlist = null;
-			board = new Board();
-			playlists = PlaylistDAO.getInstance().buscarPlaylists();
-			boards = BoardDAO.getInstance().buscarTodos(Board.class);
-		} catch (DAOException e) {
-			log.error("Erro ao buscar playlists e boards", e);
-		}
+		boardApagar = null;
+		boardSelecionada = null;
+		playlist = null;
+		board = new Board();
+		playlists = PlaylistDAO.getInstance().buscarPlaylists();
+		boards = BoardDAO.getInstance().buscarBoards();
 	}
 	
 	public void deletarBoard(){
