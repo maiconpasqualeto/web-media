@@ -26,6 +26,7 @@ import net.sf.json.JSONObject;
 import org.apache.log4j.Logger;
 
 import br.com.sixtec.webmedia.entidades.Midia;
+import br.com.sixtec.webmedia.entidades.Playlist;
 import br.com.sixtec.webmedia.facade.BoardFacade;
 
 
@@ -85,14 +86,18 @@ public class BoardRest {
 	public Response registraboard(
 			@FormParam("boardSerial") String boardSerial,
 			@FormParam("identificador") String identificador) {
-		List<Midia> midias = BoardFacade.getInstance().registrarBoard(boardSerial, identificador);
-		
+		BoardFacade facade = BoardFacade.getInstance();
+		Playlist p = facade.registrarBoard(boardSerial, identificador);
+		List<Midia> midias = facade.buscaMidiasPlaylist(p);
 		JSONArray arr = new JSONArray();
 		for (Midia m  : midias){
 			arr.add(m.toJSONObject());
 		}
+		JSONObject o = new JSONObject();
 		
-		return Response.status(Response.Status.ACCEPTED).entity(arr.toString()).build();
+		o.put("playlist", p.toJSONObject());
+		o.put("midias", arr);
+		return Response.status(Response.Status.ACCEPTED).entity(o.toString()).build();
 	}
 	
 	@GET

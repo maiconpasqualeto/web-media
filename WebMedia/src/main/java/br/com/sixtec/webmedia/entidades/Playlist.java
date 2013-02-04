@@ -21,13 +21,17 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import br.com.sixtec.webmedia.utils.WebMediaHelper;
+
+import net.sf.json.JSONObject;
+
 /**
  * @author maicon
  *
  */
 @Entity
 @Table(name="playlist")
-public class Playlist implements Serializable {
+public class Playlist implements Serializable, StringJASON {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -105,6 +109,17 @@ public class Playlist implements Serializable {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+
+	@Override
+	public JSONObject toJSONObject() {
+		JSONObject o = new JSONObject();
+		o.put("id", id);
+		o.put("descricao", descricao != null ? descricao : "");
+		o.put("dataHoraCriacao", 
+				dataHoraCriacao != null ? 
+						WebMediaHelper.FORMATADOR_DATA_HORA.format(dataHoraCriacao) : dataHoraCriacao);
+		return o;
 	}
 	
 	

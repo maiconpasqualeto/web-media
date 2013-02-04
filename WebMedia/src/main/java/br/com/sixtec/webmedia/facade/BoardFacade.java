@@ -14,6 +14,7 @@ import br.com.sixtec.webmedia.dao.MidiaDAO;
 import br.com.sixtec.webmedia.dao.base.DAOException;
 import br.com.sixtec.webmedia.entidades.Board;
 import br.com.sixtec.webmedia.entidades.Midia;
+import br.com.sixtec.webmedia.entidades.Playlist;
 
 /**
  * @author maicon
@@ -37,8 +38,8 @@ public class BoardFacade {
 	 * @param boardSerial
 	 * @return
 	 */
-	public List<Midia> registrarBoard(String boardSerial, String identificador){
-		List<Midia> midias = new ArrayList<Midia>();
+	public Playlist registrarBoard(String boardSerial, String identificador){
+		Playlist p = null;
 		try {
 			BoardDAO dao = BoardDAO.getInstance();
 			Board b = dao.buscarPeloBoardSerial(boardSerial);
@@ -50,13 +51,20 @@ public class BoardFacade {
 			}
 			
 			if (b.getPlaylist() != null){ 
-				midias = MidiaDAO.getInstance().buscarMidiasDoPlaylist(b.getPlaylist());				
+				p = b.getPlaylist();
 			}
 			
 		} catch (DAOException e) {
 			log.error("Erro ao registrar board", e);
 		}
-		return midias;
+		return p;
+	}
+	
+	public List<Midia> buscaMidiasPlaylist(Playlist p){
+		List<Midia> midias = new ArrayList<Midia>();
+		if (p != null)
+			midias = MidiaDAO.getInstance().buscarMidiasDoPlaylist(p);
+		return midias;		
 	}
 	
 	public File downloadDaMidia(Long idMidia){

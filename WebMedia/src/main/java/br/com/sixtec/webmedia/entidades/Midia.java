@@ -108,10 +108,11 @@ public class Midia implements Serializable, StringJASON {
 	public JSONObject toJSONObject() {
 		JSONObject o = new JSONObject();
 		o.put("id", id);
-		o.put("nomeArquivo", nomeArquivo);
-		o.put("pathArquivo", pathArquivo);
-		o.put("tempoReproducao", tempoReproducao);
-		o.put("dataUpload", WebMediaHelper.FORMATADOR_DATA_HORA.format(dataUpload));
+		o.put("nomeArquivo", nomeArquivo != null ? nomeArquivo : "");
+		o.put("pathArquivo", pathArquivo != null ? pathArquivo : "");
+		o.put("tempoReproducao", tempoReproducao != null ? tempoReproducao : "");
+		o.put("dataUpload", dataUpload != null ?
+				WebMediaHelper.FORMATADOR_DATA_HORA.format(dataUpload) : "");
 		return o;
 	}
 
