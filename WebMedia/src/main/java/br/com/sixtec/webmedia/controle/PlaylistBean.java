@@ -163,5 +163,12 @@ public class PlaylistBean implements Serializable {
         /*FacesMessage msg = new FacesMessage("Selecionado", p.getDescricao()); 
         FacesContext.getCurrentInstance().addMessage(null, msg);  */
     }  
+	
+	public void novo(){
+		playlist = new Playlist();
+		selectedPlaylist = null;
+		
+		carregaInformacoesInicias();
+	}
 }
 

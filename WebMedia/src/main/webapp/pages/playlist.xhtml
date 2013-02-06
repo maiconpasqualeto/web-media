@@ -1,4 +1,4 @@
-<ui:composition template="/layout/tpl_principal.xhtml"
+<ui:composition template="/layout/tpl_limpo.xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
@@ -47,7 +47,7 @@
 						<p:column style="width:75%">
 							#{m.nomeArquivo}
 				        </p:column>
-				        <p:column style="width:25%">  
+				        <p:column headerText="temp. reprod." style="width:25%">  
 				            #{m.tempoReproducao}
 				        </p:column>  
 					</p:pickList>
@@ -56,9 +56,15 @@
 				
 				<p:commandButton 
 						value="Salvar" 
-						ajax="false"
 						actionListener="#{playlistBean.salvar}" 
 						update="frmPlaylist"/>
+				<p:commandButton 
+						value="Novo" 
+						immediate="true"
+						actionListener="#{playlistBean.novo}" 
+						update="frmPlaylist">
+					
+				</p:commandButton>
 			
 				<p:separator id="separator"/>  
 			
