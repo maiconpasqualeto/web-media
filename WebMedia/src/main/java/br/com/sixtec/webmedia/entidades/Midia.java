@@ -107,7 +107,7 @@ public class Midia implements Serializable, StringJASON {
 	@Override
 	public JSONObject toJSONObject() {
 		JSONObject o = new JSONObject();
-		o.put("id", id);
+		o.put("id", id != null ? id : "");
 		o.put("nomeArquivo", nomeArquivo != null ? nomeArquivo : "");
 		o.put("pathArquivo", pathArquivo != null ? pathArquivo : "");
 		o.put("tempoReproducao", tempoReproducao != null ? tempoReproducao : "");

@@ -88,6 +88,8 @@ public class BoardRest {
 			@FormParam("identificador") String identificador) {
 		BoardFacade facade = BoardFacade.getInstance();
 		Playlist p = facade.registrarBoard(boardSerial, identificador);
+		if (p == null)
+			p = new Playlist();
 		List<Midia> midias = facade.buscaMidiasPlaylist(p);
 		JSONArray arr = new JSONArray();
 		for (Midia m  : midias){

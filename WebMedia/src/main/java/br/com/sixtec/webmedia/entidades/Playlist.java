@@ -114,7 +114,7 @@ public class Playlist implements Serializable, StringJASON {
 	@Override
 	public JSONObject toJSONObject() {
 		JSONObject o = new JSONObject();
-		o.put("id", id);
+		o.put("id", id != null ? id : "");
 		o.put("descricao", descricao != null ? descricao : "");
 		o.put("dataHoraCriacao", 
 				dataHoraCriacao != null ? 
