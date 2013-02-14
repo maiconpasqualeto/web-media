@@ -12,14 +12,17 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 
 import org.apache.log4j.Logger;
 import org.primefaces.event.SelectEvent;
 
 import br.com.sixtec.webmedia.dao.BoardDAO;
+import br.com.sixtec.webmedia.dao.MidiaDAO;
 import br.com.sixtec.webmedia.dao.PlaylistDAO;
 import br.com.sixtec.webmedia.dao.base.DAOException;
 import br.com.sixtec.webmedia.entidades.Board;
+import br.com.sixtec.webmedia.entidades.Midia;
 import br.com.sixtec.webmedia.entidades.Playlist;
 
 /**
@@ -41,6 +44,8 @@ public class BoardBean implements Serializable {
 	private Board boardApagar;
 	
 	private Playlist playlist;
+	
+	private List<Midia> midiasBoard;
 	
 	private List<Board> boards;
 	
@@ -94,6 +99,14 @@ public class BoardBean implements Serializable {
 		this.boardApagar = boardApagar;
 	}
 
+	public List<Midia> getMidiasBoard() {
+		return midiasBoard;
+	}
+
+	public void setMidiasBoard(List<Midia> midiasBoard) {
+		this.midiasBoard = midiasBoard;
+	}
+
 	@PostConstruct
 	public void listaInformacoesInciciais(){
 		boardApagar = null;
@@ -142,5 +155,9 @@ public class BoardBean implements Serializable {
 			log.error("Erro ao alterar a board", e);
 		}
 		listaInformacoesInciciais();
+	}
+	
+	public void mostraMidias(Board b){
+		midiasBoard = MidiaDAO.getInstance().buscarMidiasDoPlaylist(b.getPlaylist());
 	}
 }

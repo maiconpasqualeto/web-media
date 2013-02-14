@@ -12,29 +12,36 @@
 			
 				<p:growl id="growUpload" showDetail="true"/>
 				
-				<p:panelGrid columns="2">
-				
-					<p:outputLabel value="Arquivo" for="fileUpload" />
-					<p:fileUpload id="fileUpload"
-						value="#{midiaBean.fileUploaded}"
-			            mode="simple" 
-			            required="true"
-			            widgetVar="uploader"
-			            label="Selecionar"
-			            allowTypes="/(\.|\/)(wmv|mp4)$/">
-			        </p:fileUpload>
-		            
-					<p:outputLabel value="Tempo de reprodução" for="txtTempoReproducao" />
-					<p:inputText 
-						id="txtTempoReproducao" 
-						value="#{midiaBean.midia.tempoReproducao}" 
-						size="25"
-						maxlength="10"
-						converter="javax.faces.Integer" 
-						required="true">
-						<p:watermark for="txtTempoReproducao" value="Tempo de duração do vídeo" />
-					</p:inputText>
-						
+				<p:panelGrid>
+					<p:row>
+						<p:column>
+							<p:outputLabel value="Arquivo" for="fileUpload" />
+						</p:column>
+						<p:column style="width: 280px">
+							<p:fileUpload id="fileUpload"
+								value="#{midiaBean.fileUploaded}"
+					            mode="simple" 
+					            required="true"
+					            widgetVar="uploader"
+					            label="Selecionar"
+					            allowTypes="/(\.|\/)(mp4)$/">
+					        </p:fileUpload>
+			        	</p:column>
+			        </p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel value="Tempo de reprodução"
+								for="txtTempoReproducao" />
+						</p:column>
+						<p:column>
+							<p:inputText id="txtTempoReproducao"
+								value="#{midiaBean.midia.tempoReproducao}" size="25"
+								maxlength="10" converter="javax.faces.Integer" required="true">
+								<p:watermark for="txtTempoReproducao"
+									value="Tempo de duração do vídeo" />
+							</p:inputText>
+						</p:column>
+					</p:row>
 				</p:panelGrid>
 				
 				<p:commandButton 

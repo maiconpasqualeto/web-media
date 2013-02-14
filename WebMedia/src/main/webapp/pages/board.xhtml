@@ -93,6 +93,15 @@
 						<f:facet name="header">Identificador</f:facet>
 						<h:outputText value="#{b.identificador}" />
 					</p:column>
+					
+					<p:column>
+						<f:facet name="header">Playlist</f:facet>
+						<p:commandLink action="#{boardBean.mostraMidias(b)}" process="@this"
+							value="#{b.playlist.descricao}" oncomplete="dlgPlaylist.show()"
+							update=":frmBoard" >
+							
+						</p:commandLink>
+					</p:column>
 										
 					<p:column>
 						<f:facet name="header">Data do último playlist</f:facet>
@@ -128,6 +137,20 @@
 				    <p:commandButton value="Não" onclick="confirmaApagarBoard.hide()" type="button" />
 				 
 				</p:confirmDialog>
+				
+				<p:dialog widgetVar="dlgPlaylist" header="Midias do PLaylist" resizable="false">
+					<p:dataTable value="#{boardBean.midiasBoard}" var="m"
+						id="tblMidias" emptyMessage="Lista vazia" >
+						<p:column>
+							<f:facet name="header">Nome Midia</f:facet>
+							<h:outputText value="#{m.nomeArquivo}" />
+						</p:column>
+						<p:column>
+							<f:facet name="header">Tempo de Reproducao</f:facet>
+							<h:outputText value="#{m.tempoReproducao}" />
+						</p:column>
+					</p:dataTable>
+				</p:dialog>
 			</h:form>
 			
 		</p:panel>

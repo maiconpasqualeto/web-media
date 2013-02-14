@@ -48,7 +48,7 @@ public class Playlist implements Serializable, StringJASON {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataHoraCriacao;
 	
-	@ManyToMany(cascade=CascadeType.ALL)
+	@ManyToMany(cascade=CascadeType.PERSIST)
 	@JoinTable(name="Playlist_Midia",
 				joinColumns={@JoinColumn(name="id_playlist")},
 				inverseJoinColumns={@JoinColumn(name="id_midia")})

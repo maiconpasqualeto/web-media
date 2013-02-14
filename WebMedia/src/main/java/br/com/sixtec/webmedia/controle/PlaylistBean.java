@@ -96,12 +96,12 @@ public class PlaylistBean implements Serializable {
 	
 	public void listaPlaylist() {
 		playlists = PlaylistDAO.getInstance().buscarPlaylists();
-		for (Playlist p : playlists) {
+		/*for (Playlist p : playlists) {
 			Playlist pl = PlaylistDAO.getInstance().buscarPlaylist(p.getId());
 			for (Midia m : pl.getMidias()) {
 				log.debug("Midia : " + m.getId());
 			}
-		}
+		}*/
 	}
 	
 	public void listaMidias(){

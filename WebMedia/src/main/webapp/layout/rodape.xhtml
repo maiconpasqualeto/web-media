@@ -4,13 +4,24 @@
 <html xmlns="http://www.w3.org/1999/xhtml" 
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-	  xmlns:f="http://java.sun.com/jsf/core">
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:p="http://primefaces.org/ui">
 
 	<h:head>
 		
 	</h:head>
 	<h:body>
 		<ui:composition>
+			<p:ajaxStatus styleClass="ui-shadow" style="position:fixed;left:50%;top:45%;margin-left:-110px">
+			    <f:facet name="start" > 
+			    	<p:graphicImage value="/images/loading3.gif" />
+			    </f:facet>  
+			  	
+			    <f:facet name="complete">  
+			        <h:outputText value="" />  
+			    </f:facet>  
+			</p:ajaxStatus>  
+				              
 			<table  style="width: 100%; font-size: xx-small;" >
 				<tr>
 					<td style="text-align: center;">
