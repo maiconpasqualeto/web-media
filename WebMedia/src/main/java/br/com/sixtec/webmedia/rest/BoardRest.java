@@ -88,8 +88,10 @@ public class BoardRest {
 			@FormParam("identificador") String identificador) {
 		BoardFacade facade = BoardFacade.getInstance();
 		Playlist p = facade.registrarBoard(boardSerial, identificador);
-		if (p == null)
+		if (p == null) {
 			p = new Playlist();
+			p.setId(0L);
+		}
 		List<Midia> midias = facade.buscaMidiasPlaylist(p);
 		JSONArray arr = new JSONArray();
 		for (Midia m  : midias){
@@ -134,6 +136,15 @@ public class BoardRest {
 			
 		}
 		return bytes;
+	}
+	
+	@POST
+	@Path("processaMacro")
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)	
+	public void processoMacro(
+			@FormParam("conteudoMacro") String conteudoMacro) {
+		
+		System.out.println(conteudoMacro);
 	}
 
 }

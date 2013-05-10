@@ -118,7 +118,7 @@ public class Playlist implements Serializable, StringJASON {
 		o.put("descricao", descricao != null ? descricao : "");
 		o.put("dataHoraCriacao", 
 				dataHoraCriacao != null ? 
-						WebMediaHelper.FORMATADOR_DATA_HORA.format(dataHoraCriacao) : dataHoraCriacao);
+						WebMediaHelper.FORMATADOR_DATA_HORA.format(dataHoraCriacao) : "");
 		return o;
 	}
 	

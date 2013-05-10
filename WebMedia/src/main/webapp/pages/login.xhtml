@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:head>
+		<style type="text/css">
+            .ui-widget { font-size: 70%; }
+            .ui-datatable-data, .ui-state-default { font-size: 68%; }
+			.ui-widget .ui-widget { font-size: 95%; }
+		</style>
+	</h:head>
+	<h:body>
+		<!-- <div id="login" class="ui-widget-content ui-corner-all ui-helper-clearfix ui-shadow" 
+			style="margin-left: 40%; margin-top: 150px; width:250px; height:150px;">
+	    	<p:outputLabel id="lblLogin" />
+   	    </div>  -->
+   	    <h:form id="frmLogin">
+   	    
+   	    	<p:growl id="growLogin" showDetail="false"/>
+   	    
+   	    	<p:panelGrid columns="2" 
+   	    		styleClass="ui-shadow"
+   	    		style="margin-left: 40%; margin-top: 180px; width:250px" >
+   	    		
+   	    		<f:facet name="header"> 
+  	    			<h:outputText value="Autenticação" style="font-size:16px;"/>
+  	    		</f:facet>
+  	    		
+	   	    	<p:outputLabel id="lblUsuario" for="txtUsuario" value="Usuário:"/>
+	   	    	<p:inputText 
+	   	    		id="txtUsuario" 
+	   	    		value="#{loginBean.usuario}"
+	   	    		required="true"
+	   	    		requiredMessage="Usuário deve ser preenchido">
+	   	    		<p:focus />
+	   	    		<p:watermark for="txtUsuario" value="digite aqui o usuário" />
+   	    		</p:inputText>
+	   	    			   	    	
+	   	    	<p:outputLabel id="lblSenha" for="txtSenha"  value="Senha:" />
+	   	    	<p:password 
+	   	    		id="txtSenha"
+	   	    		value="#{loginBean.senha}"
+	   	    		required="true"
+	   	    		requiredMessage="Senha deve ser preenchida">
+	   	    		<p:watermark value="digite aqui a senha" for="txtSenha"></p:watermark>
+   	    		</p:password>
+   	    		<f:facet name="footer"> 
+    				<p:commandButton 
+  	    				id="btnLogar" 
+  	    				value="Logar" 
+  	    				ajax="true"
+  	    				update="frmLogin"
+  	    				action="#{loginBean.logar}"/>
+   	    		</f:facet>
+    		</p:panelGrid>
+	    		
+   	    </h:form>
+   	    <p:spacer height="250px" />
+		<div id="footer" class="ui-widget ui-widget-header">
+	    	<ui:insert name="rodape">
+	    	  <ui:include src="../layout/rodape.xhtml" />
+	    	</ui:insert>
+   	    </div> 
+	</h:body>
+</html>
